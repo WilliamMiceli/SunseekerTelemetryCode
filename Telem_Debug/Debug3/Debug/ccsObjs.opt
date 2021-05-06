@@ -1,0 +1,1 @@
+"./LTCspi.obj" "./RS232.obj" "./RTC.obj" "./RTCASMFunctions_CCE.obj" "./can0.obj" "./can1.obj" "./canspi.obj" "./clock_init.obj" "./io_init.obj" "./main.obj" "../lnk_msp430f5438a.cmd" -llibmath.a -llibc.a 

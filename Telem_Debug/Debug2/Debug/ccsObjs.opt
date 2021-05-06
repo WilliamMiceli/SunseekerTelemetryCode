@@ -1,0 +1,1 @@
+"./CAN.obj" "./MODEM.obj" "./RTC.obj" "./RTCASMFunctions_CCE.obj" "./char_FIFO.obj" "./clock_init.obj" "./io_init.obj" "./main.obj" "./message_FIFO.obj" "../lnk_msp430f5438a.cmd" -llibmath.a -llibc.a 

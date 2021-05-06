@@ -1,0 +1,52 @@
+/*
+ * - Implements the following UCA0 interface functions
+ *	- init
+ *	- transmit
+ *	- exchange
+ *
+ */
+
+// Include files
+#include<msp430x54xa.h>
+
+/*
+ * Initialise UCA0 port
+ */
+ 
+// Public Function prototypes
+void can0spi_init(void)
+{
+	UCA0CTL1 |= UCSWRST;					//software reset
+	UCA0CTL0 |= UCCKPH | UCMSB | UCMST | UCMODE_0 | UCSYNC; //data-capt then change; MSB first; Master; 3-pin SPI; sync
+	UCA0CTL1 |= UCSSEL_2;				//set SMCLK
+	UCA0BR0 = 0x01;					//set clk prescaler to 1
+	UCA0BR1 = 0x00;
+	UCA0STAT = 0x00;					//not in loopback mode
+	UCA0CTL1 &= ~UCSWRST;				//SPI enable turn off software reset
+	// UCA0IE |= UCTXIE | UCRXIE;		// Interrupt Enable
+}
+
+/*
+* Transmits data on UCA0 connection
+*	- Busy waits until entire shift is complete
+*/
+void can0spi_transmit(unsigned char data)
+{
+  unsigned char forceread;
+  UCA0TXBUF = data;
+  while((UCA0IFG & UCRXIFG) == 0x00);	// Wait for Rx completion (implies Tx is also complete)
+  forceread = UCA0RXBUF;
+}
+
+/*
+* Exchanges data on UCA0 connection
+*	- Busy waits until entire shift is complete
+*	- This function is safe to use to control hardware lines that rely on shifting being finalised
+*/
+unsigned char can0spi_exchange(unsigned char data)
+{
+  UCA0TXBUF = data;
+  while((UCA0IFG & UCRXIFG) == 0x00);	// Wait for Rx completion (implies Tx is also complete)
+  return(UCA0RXBUF);
+}
+ 

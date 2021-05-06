@@ -1,0 +1,71 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+# Add inputs and outputs from these tool invocations to the build variables 
+CMD_SRCS += \
+../lnk_msp430f5438a.cmd 
+
+C_SRCS += \
+../CAN.c \
+../MODEM.c \
+../RTC.c \
+../clock_init.c \
+../io_init.c \
+../main.c 
+
+S43_SRCS += \
+../RTCASMFunctions_CCE.s43 
+
+OBJS += \
+./CAN.obj \
+./MODEM.obj \
+./RTC.obj \
+./RTCASMFunctions_CCE.obj \
+./clock_init.obj \
+./io_init.obj \
+./main.obj 
+
+C_DEPS += \
+./CAN.d \
+./MODEM.d \
+./RTC.d \
+./clock_init.d \
+./io_init.d \
+./main.d 
+
+S43_DEPS += \
+./RTCASMFunctions_CCE.d 
+
+C_DEPS__QUOTED += \
+"CAN.d" \
+"MODEM.d" \
+"RTC.d" \
+"clock_init.d" \
+"io_init.d" \
+"main.d" 
+
+OBJS__QUOTED += \
+"CAN.obj" \
+"MODEM.obj" \
+"RTC.obj" \
+"RTCASMFunctions_CCE.obj" \
+"clock_init.obj" \
+"io_init.obj" \
+"main.obj" 
+
+S43_DEPS__QUOTED += \
+"RTCASMFunctions_CCE.d" 
+
+C_SRCS__QUOTED += \
+"../CAN.c" \
+"../MODEM.c" \
+"../RTC.c" \
+"../clock_init.c" \
+"../io_init.c" \
+"../main.c" 
+
+S43_SRCS__QUOTED += \
+"../RTCASMFunctions_CCE.s43" 
+
+
