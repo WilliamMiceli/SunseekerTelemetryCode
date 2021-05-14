@@ -15,7 +15,6 @@
 #include <msp430x54xa.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <msp430x54xa.h>
 #include <ctype.h>
 #include <string.h>
 #include <math.h>
@@ -34,7 +33,7 @@ static inline void delay(void)
   {
     for (jj = 0; jj < 1000; jj++)
     {
-      asm(" nop"); //The space is necessary or else the assember things nop is a label!
+      asm(" nop"); //The space is necessary or else the assembler thinks "nop" is a label!
     }
   }
 }
@@ -172,10 +171,10 @@ static inline void delay(void)
 #define RTC_SDA				0x02
 #define RTC_SCL				0x04
 #define P93					0x08
-#define USB_TX			0x10
-#define USB_RX			0x20
-#define SDC_CSn				    0x40
-#define GPS_CSn				    0x80
+#define USB_TX			    0x10
+#define USB_RX			    0x20
+#define SDC_CSn				0x40
+#define GPS_CSn				0x80
 #define P9_UNUSED			0x40 | 0x80
 
 // PORT 10
@@ -308,9 +307,9 @@ static int addr_lookup[LOOKUP_ROWS][5] = {
 };
 // removed
 //{MC_CAN_BASE1 + MC_FAN,	      	  -,                0x----,                   -,							--},                    //xx-0x0A	    High = Fan speed (rpm)           Low = Fan drive (%)
-//{MC_CAN_BASE1 + MC_TEMP3,	      -,                0x----,                   -,							--},                    //xx-0x0D	    High = Outlet Temp               Low = Capacitor Temp
+//{MC_CAN_BASE1 + MC_TEMP3,	          -,                0x----,                   -,							--},                    //xx-0x0D	    High = Outlet Temp               Low = Capacitor Temp
 //{MC_CAN_BASE2 + MC_FAN,	      	  -,                0x----,                   -,							--},                    //xx-0x0A	    High = Fan speed (rpm)           Low = Fan drive (%)
-//{MC_CAN_BASE2 + MC_TEMP3,	      -,                0x----,                   -,							--},                    //xx-0x0D	    High = Outlet Temp               Low = Capacitor Temp
+//{MC_CAN_BASE2 + MC_TEMP3,	          -,                0x----,                   -,							--},                    //xx-0x0D	    High = Outlet Temp               Low = Capacitor Temp
 
 
 //static char lut_blacklist[] = {32,11,4,5,11,12,13,14,15,23,24,25,3,26,27,28};
@@ -373,6 +372,6 @@ static char *name_lookup[NAME_LOOKUP_ROWS] = {
 // "MC1FAN", //MC_CAN_BASE1 + MC_FAN
 // "MC1TP3", //MC_CAN_BASE1 + MC_TEMP3
 // "MC2FAN", //MC_CAN_BASE2 + MC_FAN
-//"MC2TP3", //MC_CAN_BASE2 + MC_TEMP3
+// "MC2TP3", //MC_CAN_BASE2 + MC_TEMP3
 
 #endif /* SUNSEEKER2021_H_ */
