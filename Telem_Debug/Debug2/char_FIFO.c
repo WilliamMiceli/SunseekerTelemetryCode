@@ -1,7 +1,7 @@
 //
 // Telemetry Character FIFO
 //
-#include "Sunseeker2021.h"
+#include "SunseekerTelemetry2021.h"
 
 
 void CHAR_FIFO_INIT(char_fifo queue)

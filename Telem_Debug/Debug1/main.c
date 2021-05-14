@@ -12,7 +12,7 @@
 #include <math.h>
 #include <float.h>
 
-#include "main.h"
+#include "SunseekerTelemetry2021.h"
 
 // General Variables
 volatile unsigned char status_flag = FALSE;		//status flag set on timer B

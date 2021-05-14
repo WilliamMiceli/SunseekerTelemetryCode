@@ -9,8 +9,8 @@
  *
  */
 
-#ifndef MAIN_H_
-#define MAIN_H_
+#ifndef SUNSEEKERTELEMETRY2021_H_
+#define SUNSEEKERTELEMETRY2021_H_
 
 #include <msp430x54xa.h>
 
@@ -155,4 +155,4 @@ void timerB_init(void);
 #define JTAG_TMS            0x04
 #define JTAG_TCK            0x08
 
-#endif /* MAIN_H_ */
+#endif /* SUNSEEKERTELEMETRY2021_H_ */

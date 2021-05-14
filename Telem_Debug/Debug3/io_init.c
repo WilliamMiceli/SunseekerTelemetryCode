@@ -9,7 +9,7 @@
  */
 
 // Include files
-#include "Sunseeker2021.h"
+#include "SunseekerTelemetry2021.h"
 
 /*
  * Initialize I/O port directions and states

@@ -30,8 +30,8 @@
  */
 
 // Include files
-#include "Sunseeker2021.h"
 #include "can.h"
+#include "SunseekerTelemetry2021.h"
 
 // Public variables
 can_variables			can;

@@ -9,12 +9,13 @@
  *
  */
 
-#ifndef SUNSEEKER2021_H_
-#define SUNSEEKER2021_H_
+#ifndef SUNSEEKERTELEMETRY2021_H_
+#define SUNSEEKERTELEMETRY2021_H_
 
 #include <msp430x54xa.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <msp430x54xa.h>
 #include <ctype.h>
 #include <string.h>
 #include <math.h>
@@ -33,7 +34,7 @@ static inline void delay(void)
   {
     for (jj = 0; jj < 1000; jj++)
     {
-      asm(" nop"); //The space is necessary or else the assembler thinks "nop" is a label!
+      asm(" nop"); //The space is necessary or else the assember things nop is a label!
     }
   }
 }
@@ -71,10 +72,14 @@ static inline void delay(void)
 #define UART_UCBRS 0x0D // 2*ROUND(SMCLK_RATE/UART_BR-INT(SMCLK_RATE/UART_BR))*8
 #endif
 
-#include "RTC.h"
+#include "UART.h"
+#include "MODEM.h"
+#include "SPI.h"
+#include "PACKET.h" //order important
+#include "char_FIFO.h"
+#include "message_FIFO.h"
 #include "CAN.h"
-#include "RS232.h"
-
+#include "RTC.h"
 
 /******************** Pin Definitions *************************/
 
@@ -199,16 +204,6 @@ static inline void delay(void)
 #define JTAG_TMS            0x04
 #define JTAG_TCK            0x08
 
-// Transmit Packet Info
-#define HF_MSG_PACKET  10    //number of messages per packet in high frequency
-#define LF_MSG_PACKET  0   //number of messages per packet in low frequency
-#define ST_MSG_PACKET  0    //number of messages that we receive and don't send out
-#define No_MSG_PACKET  38    //number of messages that we receive and don't send out
-#define LOOKUP_ROWS HF_MSG_PACKET+LF_MSG_PACKET+ST_MSG_PACKET+No_MSG_PACKET
-#define NAME_LOOKUP_ROWS LOOKUP_ROWS
-//#define TIME_SIZE 30        //number of characters in time
-#define MSG_SIZE  30        //number of characters in single message
-
 // Motor controller CAN base address and packet offsets
 #define	MC_CAN_BASE1		0x400		// High = CAN1_SERIAL Number        Low = 0x00004003                    P=1s
 #define	MC_CAN_BASE2		0x420		// High = CAN1_SERIAL Number        Low = 0x00004003                    P=1s
@@ -307,9 +302,9 @@ static int addr_lookup[LOOKUP_ROWS][5] = {
 };
 // removed
 //{MC_CAN_BASE1 + MC_FAN,	      	  -,                0x----,                   -,							--},                    //xx-0x0A	    High = Fan speed (rpm)           Low = Fan drive (%)
-//{MC_CAN_BASE1 + MC_TEMP3,	          -,                0x----,                   -,							--},                    //xx-0x0D	    High = Outlet Temp               Low = Capacitor Temp
+//{MC_CAN_BASE1 + MC_TEMP3,	      -,                0x----,                   -,							--},                    //xx-0x0D	    High = Outlet Temp               Low = Capacitor Temp
 //{MC_CAN_BASE2 + MC_FAN,	      	  -,                0x----,                   -,							--},                    //xx-0x0A	    High = Fan speed (rpm)           Low = Fan drive (%)
-//{MC_CAN_BASE2 + MC_TEMP3,	          -,                0x----,                   -,							--},                    //xx-0x0D	    High = Outlet Temp               Low = Capacitor Temp
+//{MC_CAN_BASE2 + MC_TEMP3,	      -,                0x----,                   -,							--},                    //xx-0x0D	    High = Outlet Temp               Low = Capacitor Temp
 
 
 //static char lut_blacklist[] = {32,11,4,5,11,12,13,14,15,23,24,25,3,26,27,28};
@@ -372,6 +367,6 @@ static char *name_lookup[NAME_LOOKUP_ROWS] = {
 // "MC1FAN", //MC_CAN_BASE1 + MC_FAN
 // "MC1TP3", //MC_CAN_BASE1 + MC_TEMP3
 // "MC2FAN", //MC_CAN_BASE2 + MC_FAN
-// "MC2TP3", //MC_CAN_BASE2 + MC_TEMP3
+//"MC2TP3", //MC_CAN_BASE2 + MC_TEMP3
 
-#endif /* SUNSEEKER2021_H_ */
+#endif /* SUNSEEKERTELEMETRY2021_H_ */

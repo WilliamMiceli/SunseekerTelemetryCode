@@ -8,8 +8,8 @@
 
 // Include files
 #include<msp430x54xa.h>
-#include "Sunseeker2021.h"
 #include "RS232.h"
+#include "SunseekerTelemetry2021.h"
 
 /*********************************************************************************/
 // UART to Modem UCA3 Interface (voltage isolated)

@@ -28,7 +28,7 @@
 */
 
 // Include files
-#include "Sunseeker2021.h"
+#include "SunseekerTelemetry2021.h"
 
 #define can0_select() P4OUT &= ~CAN0_CSn
 #define can0_deselect() P4OUT |= CAN0_CSn
