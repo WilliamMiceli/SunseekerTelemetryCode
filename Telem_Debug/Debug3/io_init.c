@@ -12,7 +12,7 @@
 #include "Sunseeker2021.h"
 
 /*
- * Initialise I/O port directions and states
+ * Initialize I/O port directions and states
  * Drive unused pins as outputs to avoid floating inputs
  *
  */
