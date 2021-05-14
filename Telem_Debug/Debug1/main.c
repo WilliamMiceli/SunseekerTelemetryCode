@@ -60,14 +60,14 @@ int main(void) {
 }
 
 /*
-* Initialise Timer B
+* Initialize Timer B
 *	- Provides timer tick timebase at 100 Hz
 */
 void timerB_init( void )
 {
   TBCTL = CNTL_0 | TBSSEL_1 | ID_3 | TBCLR;		// ACLK/8, clear TBR
   TBCCR0 = (ACLK_RATE/8/TICK_RATE);				// Set timer to count to this value = TICK_RATE overflow
-  TBCCTL0 = CCIE;								// Enable CCR0 interrrupt
+  TBCCTL0 = CCIE;								// Enable CCR0 interrupt
   TBCTL |= MC_1;								// Set timer to 'up' count mode
 }
 
@@ -77,7 +77,7 @@ void timerB_init( void )
 *	- Sets Time_Flag variable
 */
 /*
-* GNU interropt symantics
+* GNU interrupt semantics
 * interrupt(TIMERB0_VECTOR) timer_b0(void)
 */
 #pragma vector = TIMERB0_VECTOR
@@ -94,7 +94,7 @@ __interrupt void timer_b0(void)
     	status_flag = TRUE;
     }
 
-	// Periodic CAN Satus Transmission
+	// Periodic CAN Status Transmission
     if(send_can) cancomm_count--;
     if( cancomm_count == 0 )
     {
