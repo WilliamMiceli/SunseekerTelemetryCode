@@ -44,10 +44,10 @@ void io_init( void )
 
     /******************************PORT 3**************************************/  
 	P3OUT = 0x00; 						// Pull pins low       	
-   	P3DIR =  CAN0_SCLK | CAN0_MOSI | SDC_SCLK | SDC_SIMO | CAN1_CLK | P3_UNUSED;
-   	P3OUT |= CAN0_SCLK | CAN0_MOSI | SDC_SCLK | SDC_SIMO | CAN1_CLK;
+   	P3DIR =  CAN0_SCLK | CAN0_MOSI | SDC_SCLK | SDC_SIMO | CAN1_SCLK | P3_UNUSED;
+   	P3OUT |= CAN0_SCLK | CAN0_MOSI | SDC_SCLK | SDC_SIMO | CAN1_SCLK;
    	P3DIR &= ~(CAN0_MISO | SDC_SOMI);
-    P3SEL = CAN0_SCLK | CAN0_MOSI | CAN0_MISO | SDC_SCLK | SDC_SIMO | SDC_SOMI | CAN1_CLK | IMU_SDA;
+    P3SEL = CAN0_SCLK | CAN0_MOSI | CAN0_MISO | SDC_SCLK | SDC_SIMO | SDC_SOMI | CAN1_SCLK | IMU_SDA;
     
  	/******************************PORT 4**************************************/ 
 	P4OUT = 0x00;						// Pull pins low      	

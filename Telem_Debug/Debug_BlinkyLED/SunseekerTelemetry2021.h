@@ -106,7 +106,7 @@ static inline void delay(void)
 #define SDC_SCLK			0x08
 #define CAN0_MOSI		    0x10
 #define CAN0_MISO		    0x20
-#define CAN1_CLK		    0x40
+#define CAN1_SCLK		    0x40
 #define IMU_SDA		        0x80
 #define P3_UNUSED			0x00
 
