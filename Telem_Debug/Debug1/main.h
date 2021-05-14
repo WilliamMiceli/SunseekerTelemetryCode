@@ -131,7 +131,7 @@ void timerB_init(void);
 #define USB_RX              0x20
 #define SDC_CSn             0x40
 #define GPS_CSn             0x80
-#define P9_UNUSED           0x40 | 0x80
+#define P9_UNUSED           0x01 | 0x08
 
 // PORT 10
 #define BT_CSn              0x01
