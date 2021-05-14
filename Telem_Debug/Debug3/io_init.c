@@ -15,39 +15,39 @@ void io_init( void )
 {
 	/******************************PORT 1**************************************/
 	P1OUT = 0x00;                                                               // Pull pins low, only affects ports set as output, no effect on inputs
-  	P1DIR = P1_UNUSED;	//set to output
-  	P1DIR &= ~(RTC_MFP | IMU_INTn); //set to input
-	/*Interrupts Enable*/
-	//    P1SEL = RTC_MFP | IMU_INTn;
-    //    P1IE  = RTC_MFP | IMU_INTn; // Enable Interrupts
-    P1IES = IMU_INTn; 		//high to low
-    P1IFG = 0x00;   										//Clears all interrupt flags on Port 1
+  	P1DIR = P1_UNUSED;                                                          // Set to output
+  	P1DIR &= ~(RTC_MFP | IMU_INTn);                                             // Set to input
+	    /*Interrupts Enable*/
+//  P1SEL = RTC_MFP | IMU_INTn;
+//  P1IE  = RTC_MFP | IMU_INTn;                                                 // Enable Interrupts
+    P1IES = IMU_INTn;                                                           // High to low
+    P1IFG = 0x00;   										                    // Clear all interrupt flags on Port 1
     delay();
 
 	/******************************PORT 2**************************************/
 	P2OUT = 0x00;                                                               // Pull pins low, only affects ports set as output, no effect on inputs
- 	P2DIR = P2_UNUSED;		//set to output
+ 	P2DIR = P2_UNUSED;                                                          // Set to output
  		/*Interrupts Enable */
-    //    P2SEL = CAN0_INTn | CAN1_INTn | GPS_INTn; //Interrupts Select
-	//    P2IES = CAN0_INTn | CAN1_INTn | GPS_INTn;
-	//    P2IE  = CAN0_INTn | CAN1_INTn | GPS_INTn; // Enable Interrupts
-	//    P2SEL |= CAN0_RXB0n | CAN0_RXB1n | CAN1_RXB0n | CAN1_RXB1n; //Interrupts Select
-	//    P2IES |= CAN0_RXB0n | CAN0_RXB1n | CAN1_RXB0n | CAN1_RXB1n;
-	//	  P2IE  |= CAN0_RXB0n | CAN0_RXB1n | CAN1_RXB0n | CAN1_RXB1n; // Enable Interrupts
-    P2IFG = 0x00;       				//Clears all interrupt flags on Port 2
+//  P2SEL = CAN0_INTn | CAN1_INTn | GPS_INTn;                                   // Interrupts Select
+//  P2IES = CAN0_INTn | CAN1_INTn | GPS_INTn;
+//  P2IE  = CAN0_INTn | CAN1_INTn | GPS_INTn;                                   // Enable Interrupts
+//  P2SEL |= CAN0_RXB0n | CAN0_RXB1n | CAN1_RXB0n | CAN1_RXB1n;                 // Interrupts Select
+//  P2IES |= CAN0_RXB0n | CAN0_RXB1n | CAN1_RXB0n | CAN1_RXB1n;
+// 	P2IE  |= CAN0_RXB0n | CAN0_RXB1n | CAN1_RXB0n | CAN1_RXB1n;                 // Enable Interrupts
+    P2IFG = 0x00;       				                                        // Clear all interrupt flags on Port 2
     delay();
 
     /******************************PORT 3**************************************/  
 	P3OUT = 0x00;                                                               // Pull pins low, only affects ports set as output, no effect on inputs
-   	P3DIR =  CAN0_SCLK | CAN0_MOSI | SDC_SCLK | SDC_SIMO | CAN1_SCLK | P3_UNUSED;
-   	P3OUT |= CAN0_SCLK | CAN0_MOSI | SDC_SCLK | SDC_SIMO | CAN1_SCLK;
+   	P3DIR =  CAN0_SCLK | CAN0_MOSI | SDC_SCLK | SDC_SIMO | CAN1_SCLK | P3_UNUSED;   // Set to output
+   	P3OUT |= CAN0_SCLK | CAN0_MOSI | SDC_SCLK | SDC_SIMO | CAN1_SCLK;               // Pull used output pins high
    	P3DIR &= ~(CAN0_MISO | SDC_SOMI);
     P3SEL = CAN0_SCLK | CAN0_MOSI | CAN0_MISO | SDC_SCLK | SDC_SIMO | SDC_SOMI | CAN1_SCLK | IMU_SDA;
     
  	/******************************PORT 4**************************************/ 
 	P4OUT = 0x00;                                                               // Pull pins low, only affects ports set as output, no effect on inputs
-    P4DIR = CAN0_RSTn | CAN0_CSn | CAN1_RSTn | CAN1_CSn | P4_UNUSED;
-	P4OUT = CAN0_RSTn | CAN0_CSn | CAN1_RSTn | CAN1_CSn;
+    P4DIR = CAN0_RSTn | CAN0_CSn | CAN1_RSTn | CAN1_CSn | P4_UNUSED;            // Set to output
+	P4OUT = CAN0_RSTn | CAN0_CSn | CAN1_RSTn | CAN1_CSn;                        // Pull used output pins high
     delay();
 	P4OUT &= ~(CAN0_RSTn | CAN1_RSTn) ;
     delay();
@@ -98,8 +98,6 @@ void io_init( void )
 
     /******************************PORT J**************************************/ 
 	PJOUT = 0x00;
-	PJDIR = 0x0F;     					//set to output as per user's guide
+	PJDIR = 0x0F;     					                                        // Set to output as per user's guide
         
 }
-
-
