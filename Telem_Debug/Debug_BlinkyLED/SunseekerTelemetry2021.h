@@ -28,9 +28,10 @@ static inline void delay(void)
 {
   volatile int jj;
   volatile int ii;
-  for (ii = 0; ii < 4; ii++)
+  // Using count-down since it uses one less instruction to compare (not really necessary here, but CCS recommends it anyway): Ultra-Low Power Advisor > Rule 13.1 (https://software-dl.ti.com/ccs/esd/documents/dmed/HTML/MSP430/1544.html)
+  for (ii = 4; ii > 0; ii--)
   {
-    for (jj = 0; jj < 1000; jj++)
+    for (jj = 1000; jj > 0; jj--)
     {
       asm(" nop"); //The space is necessary or else the assembler thinks "nop" is a label!
     }
