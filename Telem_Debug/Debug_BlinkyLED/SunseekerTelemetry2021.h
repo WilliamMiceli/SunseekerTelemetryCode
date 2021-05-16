@@ -21,8 +21,6 @@
 
 
 void clock_init(void);
-void timerB_init(void);
-void io_init(void);
 
 static inline void delay(void)
 {
@@ -50,31 +48,6 @@ static inline void delay(void)
 // Constant Definitions
 #define	TRUE				1
 #define FALSE				0
-
-#ifndef MODEM_BR1
-#define MODEM_BR1 9600
-#define MODEM_UCBRS1 0x04 // 2*ROUND(SMCLK_RATE/MODEM_BR-INT(SMCLK_RATE/MODEM_BR))*8
-#endif
-
-#ifndef MODEM_BR2
-#define MODEM_BR2 115200
-#define MODEM_UCBRS2 0x0A // 2*ROUND(SMCLK_RATE/MODEM_BR-INT(SMCLK_RATE/MODEM_BR))*8
-#endif
-
-#ifndef USB_BR
-#define USB_BR 9600
-#define USB_UCBRS 0x04 // 2*ROUND(SMCLK_RATE/UART_BR-INT(SMCLK_RATE/UART_BR))*8
-#endif
-
-#ifndef UART_BR
-#define UART_BR 19200
-#define UART_UCBRS 0x0D // 2*ROUND(SMCLK_RATE/UART_BR-INT(SMCLK_RATE/UART_BR))*8
-#endif
-
-#include "RTC.h"
-#include "CAN.h"
-#include "RS232.h"
-
 
 /******************** Pin Definitions *************************/
 
@@ -373,3 +346,5 @@ static char *name_lookup[NAME_LOOKUP_ROWS] = {
 // "MC1TP3", //MC_CAN_BASE1 + MC_TEMP3
 // "MC2FAN", //MC_CAN_BASE2 + MC_FAN
 // "MC2TP3", //MC_CAN_BASE2 + MCSUNSEEKERTELEMETRY2021_H_* SUNSEEKERTELEMETRY2021_H_ */
+
+#endif /* SUNSEEKERTELEMETRY2021_H_ */
