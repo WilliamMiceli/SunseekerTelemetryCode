@@ -5,7 +5,7 @@
 #include "SunseekerTelemetry2021.h"
 
 int main(void) {
-    WDTCTL = WDTPW | WDTHOLD;	                // Stop watchdog timer
+    WDTCTL = WDTPW | WDTHOLD;	                // Stop watchdog timer; `WDTPW` is the "WatchDog Timer PassWord", required for all `WDTCTL` operations
 	_DINT();     		    					// Disables interrupts
 
 	clock_init();								// Configure HF and LF clocks
