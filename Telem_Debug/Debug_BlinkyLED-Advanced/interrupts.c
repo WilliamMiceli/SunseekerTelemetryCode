@@ -1,7 +1,31 @@
+#include "SunseekerTelemetry2021.h"
+#include "interrupts.h"
+
+extern volatile unsigned char status_flag;
+
 /*
- * interrupts.c
+ * Timer B CCR0 Interrupt Service Routine
+ *   - Interrupts on Timer B CCR0 match at 10Hz
+ *   - Sets Time_Flag variable
  */
 
+/*
+ * GNU interrupt semantics
+ * interrupt(TIMERB0_VECTOR) timer_b0(void)
+ */
 
+#pragma vector = TIMERB0_VECTOR
+__interrupt void timer_b0(void)
+{
+      static unsigned int status_count = TELEM_STATUS_COUNT;
 
-
+      // Primary System Heart beat
+      status_count--;
+      if(status_count == 0){
+          status_count = TELEM_STATUS_COUNT;
+          status_flag = TRUE;
+          P8OUT &= ~LEDG;                           // Turn off the green LED
+      }else{
+          P8OUT |= LEDG;                            // Turn on the green LED
+      }
+}
