@@ -24,8 +24,8 @@ __interrupt void timer_b0(void)
       if(status_count == 0){
           status_count = TELEM_STATUS_COUNT;
           status_flag = TRUE;
-          P8OUT &= ~LEDG;                           // Turn off the green LED
-      }else{
           P8OUT |= LEDG;                            // Turn on the green LED
+      }else{
+          P8OUT &= ~LEDG;                           // Turn off the green LED
       }
 }
