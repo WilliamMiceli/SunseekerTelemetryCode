@@ -11,8 +11,9 @@ int main(void) {
 	clock_init();								// Configure HF and LF clocks
 	delay();
 
-	P8DIR = LEDG | LEDR | LEDY0 | LEDY1;        // Set all four main LEDs as output
-	P8OUT |= LEDG;                              // Turn on permanently the green LED
+    P8DIR |= LEDG | LEDR | LEDY0 | LEDY1;       // Set all four main LEDs as output
+    P8OUT |= LEDG;                              // Turn on permanently the green LED
+    P8OUT &= ~(LEDY0 | LEDY1);                  // Initially set both yellow LEDs off
 
 	_EINT(); 	                                //enable global interrupts
 
