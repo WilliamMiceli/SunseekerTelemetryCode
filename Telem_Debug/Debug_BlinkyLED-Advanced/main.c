@@ -2,6 +2,8 @@
  * main.c
  */
 
+#include "driverlib.h"
+
 #include "SunseekerTelemetry2021.h"
 #include "clock_init.h"
 #include "interrupts.h"
