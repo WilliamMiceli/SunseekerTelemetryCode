@@ -17,9 +17,12 @@ int main(void) {
 
 	_EINT(); 	                                //enable global interrupts
 
+	volatile int i;
     while(1)
     {
     	P8OUT ^= LEDY0 | LEDY1;                 // Toggle both yellow LEDs
-    	delay();
+    	for(i = 1000; i > 0; i--){
+    		delay();
+    	}
     }
 }
