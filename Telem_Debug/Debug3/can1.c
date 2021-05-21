@@ -34,7 +34,7 @@
 #include "SunseekerTelemetry2021.h"
 
 // Public variables
-can_variables			can;
+can_struct			can;
 
 // Private variables
 unsigned char 			buffer[16];

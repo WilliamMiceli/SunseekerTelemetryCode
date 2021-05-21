@@ -34,7 +34,14 @@
 #include "SunseekerTelemetry2021.h"
 
 // Public variables
-can_variables			can;
+can_struct			can;
+can_struct TX_can0_message;
+can_struct RX_can0_message;
+
+extern unsigned long can_msg_count;
+extern unsigned long can_err_count;
+extern unsigned long can_read_cnt;
+
 
 // Private variables
 unsigned char 			buffer[16];
@@ -152,10 +159,18 @@ void can0_init( void )
  */
 void can0_receive( void )
 {
+	can_struct *RXPtr_can_message;
 	unsigned char flags;
 	
+	can_msg_count++;
+
+	// Set up pointer to receive queue
+
+	RXPtr_can_message=&(*can0_queue.PutPt);
+
 	// Read out the interrupt flags register
 	can0_read( CANINTF, &flags, 1 );
+
 	// Check for errors
 	if(( flags & MCP_IRQ_ERR ) != 0x00 ){
 		// Read error flags and counters
@@ -164,12 +179,12 @@ void can0_receive( void )
 		// Clear error flags
 		can0_mod( EFLAG, buffer[0], 0x00 );	// Modify (to '0') all bits that were set
 		// Return error code, a blank address field, and error registers in data field
-		can.status = CAN_ERROR;
-		can.address = 0x0000;
-		can.data.data_u8[0] = flags;		// CANINTF
-		can.data.data_u8[1] = buffer[0];	// EFLG
-		can.data.data_u8[2] = buffer[1];	// TEC
-		can.data.data_u8[3] = buffer[2];	// REC
+		RXPtr_can_message->status = CAN_ERROR;
+		RXPtr_can_message->address = 0x0000;
+		RXPtr_can_message->data.data_u8[0] = flags;		// CANINTF
+		RXPtr_can_message->data.data_u8[1] = buffer[0];	// EFLG
+		RXPtr_can_message->data.data_u8[2] = buffer[1];	// TEC
+		RXPtr_can_message->data.data_u8[3] = buffer[2];	// REC
 		// Clear the IRQ flag
 		can0_mod( CANINTF, MCP_IRQ_ERR, 0x00 );
 	}
@@ -177,65 +192,70 @@ void can0_receive( void )
 	else if(( flags & MCP_IRQ_RXB0 ) != 0x00 ){
 		// Read in the info, address & message data
 		can0_read( RXB0CTRL, &buffer[0], 14 );
+		// Clear the IRQ flag as fast as possible
+		can0_mod( CANINTF, MCP_IRQ_RXB0, 0x00 );
+
 		// Fill out return structure
 		// check for Remote Frame requests and indicate the status correctly
 		if(( buffer[0] & MCP_RXB0_RTR ) == 0x00 ){
 			// We've received a standard data packet
-			can.status = CAN_OK;
+			RXPtr_can_message->status = CAN_OK;
 			// Fill in the data
-			can.data.data_u8[0] = buffer[ 6];
-			can.data.data_u8[1] = buffer[ 7];
-			can.data.data_u8[2] = buffer[ 8];
-			can.data.data_u8[3] = buffer[ 9];
-			can.data.data_u8[4] = buffer[10];
-			can.data.data_u8[5] = buffer[11];
-			can.data.data_u8[6] = buffer[12];
-			can.data.data_u8[7] = buffer[13];
+			RXPtr_can_message->data.data_u8[1] = buffer[ 7];
+			RXPtr_can_message->data.data_u8[2] = buffer[ 8];
+			RXPtr_can_message->data.data_u8[3] = buffer[ 9];
+			RXPtr_can_message->data.data_u8[4] = buffer[10];
+			RXPtr_can_message->data.data_u8[5] = buffer[11];
+			RXPtr_can_message->data.data_u8[6] = buffer[12];
+			RXPtr_can_message->data.data_u8[7] = buffer[13];
 		}
 		else{
 			// We've received a remote frame request
 			// Data is irrelevant with an RTR
-			can.status = CAN_RTR;
+			RXPtr_can_message->status = CAN_RTR;
 		}
 		// Fill in the address
-		can.address = buffer[1];
-		can.address = can.address << 3;
-		buffer[2] = buffer[2] >> 5;
-		can.address = can.address | buffer[2];
-		// Clear the IRQ flag
-		can0_mod( CANINTF, MCP_IRQ_RXB0, 0x00 );
+		RXPtr_can_message->address = ((int)(buffer[1]) << 3) | ((int)(buffer[2]) >> 5);
+		can_read_cnt++;
+
+		//add message to queue to be decoded
+		can_fifo_PUT(&can0_queue, *RXPtr_can_message);
+
 	}
 	// No error, check for received messages, buffer 1
 	else if(( flags & MCP_IRQ_RXB1 ) != 0x00 ){
 		// Read in the info, address & message data
 		can0_read( RXB1CTRL, &buffer[0], 14 );
+		// Clear the IRQ flag as fast as possible
+		can0_mod( CANINTF, MCP_IRQ_RXB1, 0x00 );
+
 		// Fill out return structure
 		// check for Remote Frame requests and indicate the status correctly
 		if(( buffer[0] & MCP_RXB1_RTR ) == 0x00 ){
 			// We've received a standard data packet
-			can.status = CAN_OK;
+			RXPtr_can_message->status = CAN_OK;
 			// Fill in the data
-			can.data.data_u8[0] = buffer[ 6];
-			can.data.data_u8[1] = buffer[ 7];
-			can.data.data_u8[2] = buffer[ 8];
-			can.data.data_u8[3] = buffer[ 9];
-			can.data.data_u8[4] = buffer[10];
-			can.data.data_u8[5] = buffer[11];
-			can.data.data_u8[6] = buffer[12];
-			can.data.data_u8[7] = buffer[13];
+			RXPtr_can_message->data.data_u8[0] = buffer[ 6];
+			RXPtr_can_message->data.data_u8[1] = buffer[ 7];
+			RXPtr_can_message->data.data_u8[2] = buffer[ 8];
+			RXPtr_can_message->data.data_u8[3] = buffer[ 9];
+			RXPtr_can_message->data.data_u8[4] = buffer[10];
+			RXPtr_can_message->data.data_u8[5] = buffer[11];
+			RXPtr_can_message->data.data_u8[6] = buffer[12];
+			RXPtr_can_message->data.data_u8[7] = buffer[13];
 		}
 		else{
 			// We've received a remote frame request
 			// Data is irrelevant with an RTR
-			can.status = CAN_RTR;
+			RXPtr_can_message->status = CAN_RTR;
 		}
 		// Fill in the address
-		can.address = buffer[1];
-		can.address = can.address << 3;
-		buffer[2] = buffer[2] >> 5;
-		can.address = can.address | buffer[2];
-		// Clear the IRQ flag
-		can0_mod( CANINTF, MCP_IRQ_RXB1, 0x00 );
+		RXPtr_can_message->address = ((int)(buffer[1]) << 3) | ((int)(buffer[2]) >> 5);
+		can_read_cnt++;
+
+		//add message to queue to be decoded
+		can_fifo_PUT(&can0_queue, *RXPtr_can_message);
+
 	}
 	// If multiple receive then clear that error
 	else if(( flags & MCP_IRQ_MERR) != 0x00 ){
@@ -245,21 +265,23 @@ void can0_receive( void )
 		// Clear error flags
 		can0_mod( EFLAG, buffer[0], 0x00 );	// Modify (to '0') all bits that were set
 		// Return error code, a blank address field, and error registers in data field
-		can.status = CAN_MERROR;
-		can.address = 0x0000;
-		can.data.data_u8[0] = flags;		// CANINTF
-		can.data.data_u8[1] = buffer[0];	// EFLG
-		can.data.data_u8[2] = buffer[1];	// TEC
-		can.data.data_u8[3] = buffer[2];	// REC
+		RXPtr_can_message->status = CAN_MERROR;
+		RXPtr_can_message->address = 0x0000;
+		RXPtr_can_message->data.data_u8[0] = flags;		// CANINTF
+		RXPtr_can_message->data.data_u8[1] = buffer[0];	// EFLG
+		RXPtr_can_message->data.data_u8[2] = buffer[1];	// TEC
+		RXPtr_can_message->data.data_u8[3] = buffer[2];	// REC
 		// Clear the IRQ flag
 		can0_mod( CANINTF, MCP_IRQ_MERR, 0x00 );
 	}
+	//not handled by buffers or errors
 	else{
-		can.status = CAN_FERROR;
-		can.address = 0x0001;
-		can.data.data_u8[0] = flags;		// CANINTF
+		RXPtr_can_message->status = CAN_FERROR;
+		RXPtr_can_message->address = 0x0001;
+		RXPtr_can_message->data.data_u8[0] = flags;		// CANINTF
 		// Clear all IRQ flag
 		can0_mod( CANINTF, 0xFF, 0x00 );
+		can_err_count++;
 	}
 	
 //added to tritum code to account for the fact that we could have more then one intrrupt pending at a given time
@@ -293,29 +315,29 @@ int can0_transmit( void )
 	
 	// Fill data into buffer, it's used by any address
 	// Allow room at the start of the buffer for the address info if needed
-	buffer[ 5] = can.data.data_u8[0];
-	buffer[ 6] = can.data.data_u8[1];
-	buffer[ 7] = can.data.data_u8[2];
-	buffer[ 8] = can.data.data_u8[3];
-	buffer[ 9] = can.data.data_u8[4];
-	buffer[10] = can.data.data_u8[5];
-	buffer[11] = can.data.data_u8[6];
-	buffer[12] = can.data.data_u8[7];
+	buffer[ 5] = TX_can0_message.data.data_u8[0];
+	buffer[ 6] = TX_can0_message.data.data_u8[1];
+	buffer[ 7] = TX_can0_message.data.data_u8[2];
+	buffer[ 8] = TX_can0_message.data.data_u8[3];
+	buffer[ 9] = TX_can0_message.data.data_u8[4];
+	buffer[10] = TX_can0_message.data.data_u8[5];
+	buffer[11] = TX_can0_message.data.data_u8[6];
+	buffer[12] = TX_can0_message.data.data_u8[7];
 
 	// Check if the incoming address has already been configured in a mailbox
-	if( can.address == buf_addr[0] ){
+	if( TX_can0_message.address == buf_addr[0] ){
 		// Mailbox 0 setup matches our new message
 		// Write to TX Buffer 0, start at data registers, and initiate transmission
 		can0_write_tx( 0x01, &buffer[5] );
 		can0_rts( 0 );
 	}
-	else if( can.address == buf_addr[1] ){
+	else if( TX_can0_message.address == buf_addr[1] ){
 		// Mailbox 1 setup matches our new message
 		// Write to TX Buffer 1, start at data registers, and initiate transmission
 		can0_write_tx( 0x03, &buffer[5] );
 		can0_rts( 1 );
 	}
-	else if( can.address == buf_addr[2] ){
+	else if( TX_can0_message.address == buf_addr[2] ){
 		// Mailbox 2 setup matches our new message
 		// Write to TX Buffer 2, start at data registers, and initiate transmission
 		can0_write_tx( 0x05, &buffer[5] );
@@ -324,8 +346,8 @@ int can0_transmit( void )
 	else{
 		// No matches in existing mailboxes
 		// No mailboxes already configured, so we'll need to load an address - set it up
-		buffer[0] = (unsigned char)(can.address >> 3);
-		buffer[1] = (unsigned char)(can.address << 5);
+		buffer[0] = (unsigned char)(TX_can0_message.address >> 3);
+		buffer[1] = (unsigned char)(TX_can0_message.address << 5);
 		buffer[2] = 0x00;						// EID8
 		buffer[3] = 0x00;						// EID0
 		buffer[4] = 0x08;						// DLC = 8 bytes
@@ -336,19 +358,19 @@ int can0_transmit( void )
 			// Write to TX Buffer 0, start at address registers, and initiate transmission
 			can0_write_tx( 0x00, &buffer[0] );
 			can0_rts( 0 );
-			buf_addr[0] = can.address;
+			buf_addr[0] = TX_can0_message.address;
 		}									
 		else if( buf_addr[1] == 0xFFFF ){		// Mailbox 1 is free
 			// Write to TX Buffer 1, start at address registers, and initiate transmission
 			can0_write_tx( 0x02, &buffer[0] );
 			can0_rts( 1 );
-			buf_addr[1] = can.address;
+			buf_addr[1] = TX_can0_message.address;
 		}
 		else if( buf_addr[2] == 0xFFFF ){		// Mailbox 2 is free
 			// Write to TX Buffer 2, start at address registers, and initiate transmission
 			can0_write_tx( 0x04, &buffer[0] );
 			can0_rts( 2 );
-			buf_addr[2] = can.address;
+			buf_addr[2] = TX_can0_message.address;
 		}
 		else {					
 	
@@ -369,21 +391,21 @@ int can0_transmit( void )
 						// Setup mailbox 0 and send the message
 						can0_write_tx( 0x00, &buffer[0] );
 						can0_rts( 0 );
-						buf_addr[0] = can.address;
+						buf_addr[0] = TX_can0_message.address;
 					}
 					// Is it mailbox 1?
 					else if(( can0_read_status() & 0x10 ) == 0x00) {
 						// Setup mailbox 1 and send the message
 						can0_write_tx( 0x02, &buffer[0] );
 						can0_rts( 1 );
-						buf_addr[1] = can.address;
+						buf_addr[1] = TX_can0_message.address;
 					}
 					// Is it mailbox 2?
 					else if(( can0_read_status() & 0x40 ) == 0x00) {
 						// Setup mailbox 2 and send the message
 						can0_write_tx( 0x04, &buffer[0] );
 						can0_rts( 2 );
-						buf_addr[2] = can.address;
+						buf_addr[2] = TX_can0_message.address;
 					}
 			//	}
 		}

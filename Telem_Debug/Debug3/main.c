@@ -23,7 +23,7 @@
 #include "SunseekerTelemetry2021.h"
 
 // structures
-//message_fifo decode_queue;
+can_message_fifo can0_queue;
 //char_fifo USB_FIFO, MODEM_FIFO;
 
 //hf_packet pckHF;
@@ -38,9 +38,12 @@ enum MODE {INIT, CANREAD, DECODE, MODEMTX, USBTX, LOWP, LOOP} ucMODE;
 unsigned volatile char can_status_test, can_rcv_status_test;
 unsigned long can_msg_count = 0, can_stall_cnt = 0;
 unsigned long can_err_count = 0, can_read_cnt = 0;
+
+char CAN0_INT_FLAG = FALSE;
+char CAN1_INT_FLAG = FALSE;
+
 int thrs, tmin, tsec;
 char ucFLAG,usbENABLE;
-char CAN1_INT_FLAG = FALSE;
 
 volatile unsigned char status_flag = FALSE;
 volatile unsigned char hs_comms_flag = FALSE;
@@ -48,6 +51,9 @@ volatile unsigned char ls_comms_flag = FALSE;
 volatile unsigned char st_comms_flag = FALSE;
 
 static char init_msg_data[21] = "0xHHHHHHHH,0xHHHHHHHH";
+static char init_time_msg[17] = "TL_TIM,HH:MM:SS\r\n";
+
+char time_test_msg[16] = "TL_TIM,HH:MM:SS\0";
 
 
 // General Variables
@@ -70,14 +76,35 @@ int main(void) {
 	io_init();
 	delay();
 
+	init_RTC();
+	delay();
+
+	getTime(&thrs,&tmin,&tsec);
+	delay();
+
 	UART_init();
 	delay();
+
+	insert_time(&time_test_msg[0]);
+	UART_puts(time_test_msg);
+	delay();
+
 
 	can0spi_init();
 	delay();
 
+	can0_init();
+	delay();
+
 	can1spi_init();
 	delay();
+
+	can1_init();
+	delay();
+
+	can_fifo_INIT();
+
+
 
 
 
@@ -93,6 +120,14 @@ int main(void) {
     		P8OUT ^= BIT3;                          // Toggle P1.0
     		P8OUT ^= BIT6;                          // Toggle P1.0
     	}
+
+        CAN0_INT_FLAG = ((P2IN & CAN1_INTn)==0);
+        if(CAN0_INT_FLAG){
+//          ucFLAG |= 0x40;
+          can_stall_cnt++;
+          can0_receive();
+        }
+
 
       // __delay_cycles(100000);                  // Delay
     }

@@ -74,14 +74,14 @@ typedef union _group_16 {
 	unsigned int data_u16;
 } group_16;
 
-typedef struct _can_variables 
+typedef struct _can_packet_struct
 {
   unsigned int		status;
   unsigned int 		address;
   group_64 			data;
-} can_variables;
+} can_struct;
 
-extern can_variables	can;
+// extern can_struct	can;
 
 // Private function prototypes
 void 					can0_reset( void );

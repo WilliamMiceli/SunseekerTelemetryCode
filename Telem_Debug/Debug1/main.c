@@ -39,9 +39,9 @@ int main(void) {
     P8DIR |= BIT5;                            // P1.0 output
     P8DIR |= BIT6;                            // P1.0 output
     P8OUT &= ~BIT3;                          // Toggle P1.0
-    P8OUT &= ~BIT4;                          // Toggle P1.0
+//    P8OUT &= ~BIT4;                          // Toggle P1.0
     P8OUT &= ~BIT5;                          // Toggle P1.0
-    P8OUT &= ~BIT6;                          // Toggle P1.0
+//    P8OUT &= ~BIT6;                          // Toggle P1.0
 
 	_EINT(); 	//enable global interrupts
 
@@ -50,6 +50,8 @@ int main(void) {
     	if(status_flag){
     		status_flag = FALSE;
     		P8OUT ^= BIT3;                          // Toggle P1.0
+    		P8OUT ^= BIT4;                          // Toggle P1.0
+    		P8OUT ^= BIT5;                          // Toggle P1.0
     		P8OUT ^= BIT6;                          // Toggle P1.0
     	}
 
