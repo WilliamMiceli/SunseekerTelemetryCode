@@ -33,6 +33,8 @@ int main(void) {
     while(1)
     {
     	P8OUT ^= LEDY0 | LEDY1;                 // Toggle both yellow LEDs
-    	delay();
+    	for(i = 1000; i > 0; i--){
+    	    delay();
+    	}
     }
 }
