@@ -15,7 +15,7 @@ int main(void) {
     P8OUT |= LEDG;                              // Turn on permanently the green LED
     P8OUT &= ~(LEDY0 | LEDY1);                  // Initially set both yellow LEDs to Low
 
-	_EINT(); 	                                //enable global interrupts
+	_EINT(); 	                                // Enable global interrupts
 
 	volatile int i;
     while(1)

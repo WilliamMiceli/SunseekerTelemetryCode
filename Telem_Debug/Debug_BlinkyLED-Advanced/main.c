@@ -26,7 +26,7 @@ int main(void) {
 	P8OUT &= ~LEDY0;                            // Initially set LEDY0 to High
 	P8OUT |= LEDY1;                             // Initially set LEDY1 to Low
 
-	_EINT(); 	                                //enable global interrupts
+	_EINT(); 	                                // Enable global interrupts
 
 	volatile int i;
     while(1)
