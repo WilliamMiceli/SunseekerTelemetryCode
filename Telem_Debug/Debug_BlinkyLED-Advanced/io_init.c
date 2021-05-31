@@ -1,14 +1,3 @@
-/*
- *  I/O Initialization
- */
-
-/*
- * Initialize I/O port directions and states
- * Drive unused pins as outputs to avoid floating inputs and wasting power
- *
- */
-
-#include "SunseekerTelemetry2021.h"
 #include "io_init.h"
 
 void io_init(void)

@@ -1,4 +1,3 @@
-#include "SunseekerTelemetry2021.h"
 #include "interrupts.h"
 
 extern volatile unsigned char status_flag;

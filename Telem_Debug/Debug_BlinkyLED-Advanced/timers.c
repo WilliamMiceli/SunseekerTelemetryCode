@@ -1,10 +1,3 @@
-
-/*
-* Initialize Timer B
-*   - Provides timer tick timebase at 100 Hz
-*/
-
-#include "SunseekerTelemetry2021.h"
 #include "timers.h"
 
 void timerB_init(void)

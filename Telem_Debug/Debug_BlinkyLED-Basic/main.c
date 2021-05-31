@@ -1,7 +1,3 @@
-/*
- * main.c
- */
-
 #include "SunseekerTelemetry2021.h"
 
 int main(void) {

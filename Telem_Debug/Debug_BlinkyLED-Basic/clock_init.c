@@ -15,12 +15,10 @@
  */
 #include <msp430x54xa.h>
 
-
 void Port_Init(void);
 void Clock_XT1_Init(void);
 void Clock_XT2_Init(void);
 void SetVCoreUp(unsigned int level);
-
 
 void clock_init(void)
 {
