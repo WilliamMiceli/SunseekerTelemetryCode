@@ -19,8 +19,8 @@ int main(void) {
 	io_init();                                  // Initialize all input/output pins
 	delay();
 
-	P8OUT &= ~LEDY0;                            // Initially set LEDY0 to High
-	P8OUT |= LEDY1;                             // Initially set LEDY1 to Low
+	P8OUT &= ~LEDY0;                            // Initially set LEDY0 to Low
+	P8OUT |= LEDY1;                             // Initially set LEDY1 to High
 
 	_EINT(); 	                                // Enable global interrupts
 
