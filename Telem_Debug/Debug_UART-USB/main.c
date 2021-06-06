@@ -3,7 +3,7 @@
 #include "interrupts.h"
 #include "io_init.h"
 #include "timers.h"
-#include "usci_init.h"
+#include "usci.h"
 
 volatile unsigned char status_flag = FALSE;
 
