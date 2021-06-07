@@ -31,7 +31,7 @@ void usci_A1_init(void){
     /*************************************************************************/
 
 void usci_A2_init(void){
-    UCA2CTL1 |= UCSWRST;                                                        // Software Reset Enable - Set high, disabling the USCI module; USCI configuration changes can only be made when the UCSWRST bit = 1
+    UCA2CTL1 |= UCSWRST;                                                        // Software Reset Enable - Set high, disabling the USCI module; Changes to USCI configuration registers can only be made when the UCSWRST bit = 1
     UCA2CTL1 &= ~0b11000000;                                                    // Reset both UCSSELx bits so the USCI Clock Source Select bits are more predictable
     UCA2CTL1 |= UCSSEL__SMCLK;                                                  // USCI Clock Source Select - SMCLK
     UCA2CTL1 &= ~UCRXEIE;                                                       // Receive Erroneous-Character Interrupt Enable - Disabled
