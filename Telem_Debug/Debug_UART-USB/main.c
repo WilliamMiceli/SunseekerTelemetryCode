@@ -23,9 +23,12 @@ int main(void) {
 	usci_init();                                // Initialize USCI modules
 	delay();
 
-	P8OUT |= LEDY0;                            // Initially set LEDY0 to High
-
 	_EINT(); 	                                // Enable global interrupts
+
+    P8OUT |= LEDY0;                             // Initially set LEDY0 to High
+
+    usci_A2_enable();
+    usci_A2_enableInterrupt();
 
     while(1)
     {
