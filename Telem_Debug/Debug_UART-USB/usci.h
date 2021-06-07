@@ -36,6 +36,12 @@ void usci_A2_enable(void);
 
 void usci_A2_disable(void);
 
+void usci_A2_enableInterrupt(void);
+
+void usci_A2_disableInterrupt(void);
+
+void usci_A2_transmitChar(char charToTransmit);
+
 void usci_A3_init(void);
 
 void usci_B0_init(void);

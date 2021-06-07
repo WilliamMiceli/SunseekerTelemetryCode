@@ -61,6 +61,21 @@ void usci_A2_disable(void){
     UCA2CTL1 |= UCSWRST;                                                        // Software Reset Enable - Set high, disabling the USCI module
 }
 
+void usci_A2_enableInterrupt(void){
+    UCA2IE |= (UCTXIE | UCRXIE);                                                // Enable transmit and receive interrupts
+}
+
+void usci_A2_disableInterrupt(void){
+    UCA2IE &= ~(UCTXIE | UCRXIE);                                               // Disable transmit and receive interrupts
+}
+
+void usci_A2_transmitChar(char charToTransmit){
+    while((UCA2IFG & UCTXIFG) == 0){                                            // If the USCI module is not yet ready for the next value to transmit, wait indefinitely
+        _NOP();                                                                 // Processor will do nothing until loop exits; should be converted to interrupt in the future
+    }
+    UCA2TXBUF = charToTransmit;                                                 // When USCI module signals that it is ready, the next character value is moved into the transmit buffer
+}
+
 
 
     /*************************************************************************/
