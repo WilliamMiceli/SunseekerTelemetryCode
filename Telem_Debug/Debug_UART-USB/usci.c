@@ -71,9 +71,13 @@ void usci_A2_disableInterrupt(void){
 
 void usci_A2_transmitChar(char charToTransmit){
     while((UCA2IFG & UCTXIFG) == 0){                                            // If the USCI module is not yet ready for the next value to transmit, wait indefinitely
-        _NOP();                                                                 // Processor will do nothing until loop exits; should be converted to interrupt in the future
+        _NOP();                                                                 // Processor will do nothing until loop exits
     }
     UCA2TXBUF = charToTransmit;                                                 // When USCI module signals that it is ready, the next character value is moved into the transmit buffer
+}
+
+char usci_A2_receiveChar(void){
+
 }
 
 
