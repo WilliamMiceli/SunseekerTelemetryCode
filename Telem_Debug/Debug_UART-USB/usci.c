@@ -77,10 +77,46 @@ void usci_A2_transmitChar(char charToTransmit){
 }
 
 char usci_A2_receiveChar(void){
+    short i = 100;                                                              // Initialize a countdown
 
+    while (((UCA2IFG & UCRXIFG) == 0) && (i > 0)){                              // Wait until either the end of the countdown or when the UCA2IFG register signals that the receive buffer is ready
+        --i;
+    }
+    return(UCA2RXBUF);                                                          // Return the receive buffer regardless of whether it is ready or not
 }
 
+int usci_A2_transmitString(char* pString){
+    short i = 0;                                                                // Initialize a counter of how many characters were transmitted
+    char nextChar = *pString;                                                   // Load the first character in the string array from the pointer
 
+    while(nextChar != '\0'){                                                    // Unless the next character in the string array is a null terminator, continue sending more characters
+        usci_A2_transmitChar(nextChar);                                         // Transmit the next character, as it is not a null terminator
+        ++i;                                                                    // Increment the counter
+        ++pString;                                                              // Move the pointer to the next memory location, which is storing the next character in the string array
+        nextChar = *pString;                                                    // Load the next character from memory
+    }
+
+    usci_A2_transmitChar('\n');                                                 // Transmit a "New Line" character
+    usci_A2_transmitChar('\r');                                                 // Transmit a "Carriage Return" character
+
+    return(i);                                                                  // Return the counter of how many characters were transmitted, not including the "New Line" and "Carriage Return" characters
+}
+
+int usci_A2_receiveString(char* pString){
+    short i = 0;                                                                // Initialize a counter of how many characters were received
+
+    while(1){                                                                   // Continue looping until a "Carriage Return" character is received
+        *pString = usci_A2_receiveChar();                                       // Store the received character in the designated memory location
+
+        if(*pString == '\r'){                                                   // If a "Carriage Return" character is found:
+            *pString = '\0';                                                    // Overwrite it with a null terminator
+            return(i);                                                          // End receiving new characters and return the count of characters received
+        }else{                                                                  // Else:
+            ++pString;                                                          // Increment the pointer to the next memory location for the next character
+            ++i;                                                                // Increment the counter of received characters
+        }
+    }
+}
 
     /*************************************************************************/
     /******************************** USCI A3 ********************************/

@@ -42,6 +42,12 @@ void usci_A2_disableInterrupt(void);
 
 void usci_A2_transmitChar(char charToTransmit);
 
+char usci_A2_receiveChar(void);
+
+int usci_A2_transmitString(char* pString);
+
+int usci_A2_receiveString(char* pString);
+
 void usci_A3_init(void);
 
 void usci_B0_init(void);
