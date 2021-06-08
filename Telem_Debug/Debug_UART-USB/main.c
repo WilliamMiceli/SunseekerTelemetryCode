@@ -30,8 +30,12 @@ int main(void) {
     usci_A2_enable();
     usci_A2_enableInterrupt();
 
+    char UARTTransmitString[] = "[DEBUG] Test Transmission String";
+    char* pUARTReceiveString = calloc(1, 256 * sizeof(*pUARTReceiveString) + 1);
+
     while(1)
     {
-
+        usci_A2_transmitString(&UARTTransmitString[0]);
+        delayMultiplied(5000);
     }
 }
