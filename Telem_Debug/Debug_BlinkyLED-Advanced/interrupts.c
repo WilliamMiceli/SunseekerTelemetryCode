@@ -14,8 +14,7 @@ extern volatile unsigned char status_flag;
  */
 
 #pragma vector = TIMER0_B0_VECTOR
-__interrupt void TIMER0_B0_ISR(void)
-{
+__interrupt void TIMER0_B0_ISR(void){
       static unsigned int status_count = TELEM_STATUS_COUNT;
 
       // Primary System Heart beat
