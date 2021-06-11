@@ -13,8 +13,8 @@ extern volatile unsigned char status_flag;
  * interrupt(TIMERB0_VECTOR) timer_b0(void)
  */
 
-#pragma vector = TIMERB0_VECTOR
-__interrupt void timer_b0(void)
+#pragma vector = TIMER0_B0_VECTOR
+__interrupt void TIMER0_B0_ISR(void)
 {
       static unsigned int status_count = TELEM_STATUS_COUNT;
 
