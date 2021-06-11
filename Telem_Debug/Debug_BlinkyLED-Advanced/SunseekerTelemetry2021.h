@@ -10,7 +10,7 @@
 #ifndef SUNSEEKERTELEMETRY2021_H_
 #define SUNSEEKERTELEMETRY2021_H_
 
-#include <msp430x54xa.h>
+#include <msp430.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>

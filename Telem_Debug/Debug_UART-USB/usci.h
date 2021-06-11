@@ -5,7 +5,7 @@
 #ifndef USCI_H_
 #define USCI_H_
 
-#include <msp430x54xa.h>
+#include <msp430.h>
 
 /*
  * Initializes all USCI modules using their own respective `usci_xx_init()` functions

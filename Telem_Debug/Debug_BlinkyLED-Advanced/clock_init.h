@@ -17,7 +17,6 @@
 #ifndef CLOCK_INIT_H_
 #define CLOCK_INIT_H_
 
-#include <msp430x54xa.h>
 #include "SunseekerTelemetry2021.h"
 
 void Port_Init(void);
