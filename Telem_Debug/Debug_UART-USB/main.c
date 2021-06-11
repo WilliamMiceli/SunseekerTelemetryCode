@@ -6,6 +6,8 @@
 #include "usci.h"
 
 volatile unsigned char status_flag = FALSE;
+char UARTTransmitString[] = "[DEBUG] Test Transmission String";
+char* pUARTReceiveString;
 
 int main(void) {
     WDTCTL = WDTPW | WDTHOLD;	                // Stop watchdog timer; `WDTPW` is the "WatchDog Timer PassWord", required for all `WDTCTL` operations
@@ -27,15 +29,22 @@ int main(void) {
 
     P8OUT |= LEDY0;                             // Initially set LEDY0 to High
 
+    pUARTReceiveString = calloc(1, 256 * sizeof(*pUARTReceiveString) + 1);
+
     usci_A2_enable();
     usci_A2_enableInterrupt();
 
-    char UARTTransmitString[] = "[DEBUG] Test Transmission String";
-    char* pUARTReceiveString = calloc(1, 256 * sizeof(*pUARTReceiveString) + 1);
-
     while(1)
     {
+        // Repeating debug transmission string
         usci_A2_transmitString(&UARTTransmitString[0]);
+
+        // String received, to be transmitted back
+        if(pUARTReceiveString[0] != '\0'){
+            usci_A2_transmitString(pUARTReceiveString);
+            pUARTReceiveString[0] = '\0';
+        }
+
         delayMultiplied(5000);
     }
 }
