@@ -1,7 +1,7 @@
 #include "interrupts.h"
 
 extern volatile unsigned char status_flag;
-extern char* pUARTReceiveString;
+extern char* pUSBReceiveString;
 
 /*
  * Timer B CCR0 Interrupt Service Routine
@@ -31,5 +31,5 @@ __interrupt void TIMER0_B0_ISR(void){
 
 #pragma vector = USCI_A2_VECTOR
 __interrupt void USCI_A2_ISR(void){
-    usci_A2_receiveString(pUARTReceiveString);
+    usci_A2_receiveString(pUSBReceiveString);
 }
