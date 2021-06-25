@@ -5,6 +5,7 @@
 #include "timers.h"
 #include "usci.h"
 
+long delayCounter = 0;
 volatile unsigned char status_flag = FALSE;
 char USBTransmitString[] = "[DEBUG] Test Transmission String";
 char* pUSBReceiveString;
@@ -37,14 +38,17 @@ int main(void) {
     while(1)
     {
         // Repeating debug transmission string
-        usci_A2_transmitString(&USBTransmitString[0]);
+        if(delayCounter == 0){
+            usci_A2_transmitString(&USBTransmitString[0]);
+        }else{
+            ++delayCounter;
+            delayCounter %= 10000;
+        }
 
         // String received, to be transmitted back
         if(pUSBReceiveString[0] != '\0'){
             usci_A2_transmitString(pUSBReceiveString);
             pUSBReceiveString[0] = '\0';
         }
-
-        delayMultiplied(5000);
     }
 }
