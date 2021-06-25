@@ -31,8 +31,8 @@ int main(void) {
 
     pUSBReceiveString = calloc(1, 256 * sizeof(*pUSBReceiveString) + 1);
 
-    usci_A2_enable();
-    usci_A2_enableInterrupt();
+    usci_A2_enable();                           // Enable the USB interface
+    usci_A2_enableInterrupt();                  // Enable interrupts for the USB interface
 
     while(1)
     {
