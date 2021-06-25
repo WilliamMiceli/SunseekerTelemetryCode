@@ -12,6 +12,10 @@
  */
 void usci_init(void);
 
+void usci_A0_init(void);
+
+void usci_A1_init(void);
+
 /*
  * USCI A2 Initialization [UART Mode]
  *
@@ -26,10 +30,6 @@ void usci_init(void);
  *      secondModReg: 0
  *      overSampling: 0
  */
-void usci_A0_init(void);
-
-void usci_A1_init(void);
-
 void usci_A2_init(void);
 
 void usci_A2_enable(void);
