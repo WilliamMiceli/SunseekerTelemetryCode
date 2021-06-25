@@ -81,8 +81,8 @@ static inline void delayMultiplied(int multiplier){
 
 // PORT 3
 #define CAN0_SCLK		    0x01
-#define SDC_SIMO			0x02
-#define SDC_SOMI			0x04
+#define SDC_MOSI			0x02
+#define SDC_MISO			0x04
 #define SDC_SCLK			0x08
 #define CAN0_MOSI		    0x10
 #define CAN0_MISO		    0x20
