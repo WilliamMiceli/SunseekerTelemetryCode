@@ -148,7 +148,12 @@ void usci_B1_init(void){
 
 void usci_B2_init(void){
     UCB2CTL1 |= UCSWRST;                                                        // Software Reset Enable - Set high, disabling the USCI module; Changes to USCI configuration registers can only be made when the UCSWRST bit = 1
-    UCB2CTL0 &= ~0b10000000;                                                    // Using 7-bit addressing mode
+    UCB2CTL0 &= ~UCA10;                                                         // Use 7-bit addressing mode for itself
+    UCB2CTL0 &= ~UCSLA10;                                                       // Use 7-bit addressing mode for slaves
+    UCB2CTL0 &= ~UCMM;                                                          // Single-master environment only
+    UCB2CTL0 |= UCMST;                                                          // Master mode selected
+    UCB2CTL0 |= UCMODE_3;                                                       // I2C mode selected for the USCI
+    UCB2CTL1 |= UCSSEL__SMCLK;                                                  // Use SMCLK as the USCi's clock source
 }
 
     /*************************************************************************/
