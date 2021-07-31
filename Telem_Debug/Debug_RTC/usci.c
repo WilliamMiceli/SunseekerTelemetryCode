@@ -147,14 +147,30 @@ void usci_B1_init(void){
     /*************************************************************************/
 
 void usci_B2_init(void){
-    UCB2CTL1 |= UCSWRST;                                                        // Software Reset Enable - Set high, disabling the USCI module; Changes to USCI configuration registers can only be made when the UCSWRST bit = 1
+    UCB2CTL1 |= UCSWRST;                                                        // Software Reset Enabled - Set high, disabling the USCI module; Changes to USCI configuration registers can only be made when the UCSWRST bit = 1
     UCB2CTL0 &= ~UCA10;                                                         // Use 7-bit addressing mode for itself
     UCB2CTL0 &= ~UCSLA10;                                                       // Use 7-bit addressing mode for slaves
     UCB2CTL0 &= ~UCMM;                                                          // Single-master environment only
     UCB2CTL0 |= UCMST;                                                          // Master mode selected
     UCB2CTL0 |= UCMODE_3;                                                       // I2C mode selected for the USCI
-    UCB2CTL1 |= UCSSEL__SMCLK;                                                  // Use SMCLK as the USCi's clock source
+    UCB2CTL0 |= UCSYNC;                                                         // Synchronous Mode Enabled
+    UCB2CTL1 |= UCSSEL__SMCLK;                                                  // SMCLK selected as clock source
+    UCB2CTL1 |= UCTR;                                                           // Set as Transmitter
+    UCB2CTL1 &= ~UCTXNACK;                                                      // Acknowledge normally, do not generate NACK
+    UCB2CTL1 &= ~UCTXSTP;                                                       // Do not generate STOP condition
+    UCB2CTL1 &= ~UCTXSTT;                                                       // Do not generate START condition
+    UCB2BRW = 25;                                                               // Prescaler for baud rate set to 25
 }
+
+void usci_B2_enable(void){
+    UCB2CTL1 &= ~UCSWRST;                                                       // Software Reset Disabled - Set low, enabling the USCI module
+}
+
+void usci_B2_disable(void){
+    UCB2CTL1 |= UCSWRST;                                                        // Software Reset Enabled - Set high, disabling the USCI module
+}
+
+
 
     /*************************************************************************/
     /******************************** USCI B3 ********************************/

@@ -20,7 +20,7 @@ void usci_A1_init(void);
  * USCI A2 Initialization [UART Mode]
  *
  * The FTDI FT230XS-R that was selected can handle up to 3 Mbaud, so we'll target 1 Mbaud
- * The SMCLK is currently at 10 MHz
+ * The SMCLK is currently set to 10 MHz
  *
  * Using the "MSP430 USCI/EUSCI UART Baud Rate Calculation" tool at:
  * http://software-dl.ti.com/msp430/msp430_public_sw/mcu/msp430/MSP430BaudRateConverter/index.html
@@ -59,8 +59,15 @@ void usci_B1_init(void);
  *
  * The Microchip Technology MCP7940M supports up to 400 kHz I2C communication.
  *
+ * The SMCLK is currently set to 10 MHz
+ * 10 MHz / 25 = 400 kHz
+ * Therefore, the prescaler needs to be set to 25
  */
 void usci_B2_init(void);
+
+void usci_B2_enable(void);
+
+void usci_B2_disable(void);
 
 void usci_B3_init(void);
 
